@@ -41,8 +41,9 @@
 // test();
 
 // Note: While shadowing a variable, it should not cross the boundary of scope.
-// Thus, shadowing var variable with a let is fine, but, we cannot do the opposite 
-// (called as illegal shadowing -> error: identifier has already been defined)
+// Thus, shadowing var variable with a let/const is fine, but, we cannot do the 
+// opposite (called as illegal shadowing -> error: identifier has already been 
+// defined)
 
 ////////////////////////////////////////////////////
 
@@ -68,9 +69,18 @@
 // All 3 i.e. var, let and const variables are hoisted, but let and const
 // are hoisted in TDZ.
 
-
 // TDZ refers to the period b/w the start of the block scope and the actual 
 // declaration of the variable.
 // During the TDZ, accessing the variable will result in a ReferenceError. 
 // In easy words, TDZ is the state where variables are in the scope but they 
 // are not yet declared.
+
+// function abc() {
+//     console.log(a, b, c);
+
+//     const c = 30;
+//     let b = 20;
+//     var a = 10;
+// }
+
+// abc();
