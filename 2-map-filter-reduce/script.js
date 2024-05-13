@@ -167,6 +167,13 @@ let students = [
 // }
 // console.log(names);
 
+// Using forEach():
+// let names = [];
+// students.forEach((stu) => {
+//     names.push(stu.name.toUpperCase());
+// })
+// console.log(names);
+
 // Using map
 let names = students.map((stu) => stu.name.toUpperCase());
 console.log(names);
