@@ -69,8 +69,9 @@
 // All 3 i.e. var, let and const variables are hoisted, but let and const
 // are hoisted in TDZ.
 
-// TDZ refers to the period b/w the start of the block scope and the actual 
-// declaration of the variable.
+// A variable declared with let, const, or class is said to be in a "temporal dead zone" (TDZ) 
+// from the start of the block until code execution reaches the place where the 
+// variable is declared and initialized.
 // During the TDZ, accessing the variable will result in a ReferenceError. 
 // In easy words, TDZ is the state where variables are in the scope but they 
 // are not yet declared.
