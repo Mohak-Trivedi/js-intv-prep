@@ -104,7 +104,9 @@
 // Because of the asynchronous nature of setTimeout, the loop will finish 
 // executing before any of the setTimeout callbacks are invoked. So, by the time 
 // each callback runs, the value of i will be equal to the final value of i after 
-// the loop has finished, which is 5.
+// the loop has finished, which is 5. All of the setTimeouts will refer to the same
+// i and won't have their own block's i, because i is a var variable and hence has
+// function scope, not block scope.
 
 // for(let i = 0;i < 5;i++) {
 //     setTimeout(function () {
@@ -119,6 +121,7 @@
 // 3
 // 4
 
+// Explanation:
 // In this modified code, let is used instead of var to declare the variable i. 
 // Unlike var, let has block scope, which means it creates a new binding of i 
 // for each iteration of the loop. Consequently, each iteration of the loop 
