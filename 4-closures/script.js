@@ -258,24 +258,189 @@
 // How would you use a Closure to create a private counter?
 // Private counter means we must not directly manipulate the value of counter
 // we must do it via functions.
-function counter () {
-    var _counter = 0; // _variableName is naming convention for private variables
+// function counter () {
+//     var _counter = 0; // _variableName is naming convention for private variables
 
-    function add(increment) {
-        _counter += increment;
-    }
+//     function add(increment) {
+//         _counter += increment;
+//     }
 
-    function retrieve() {
-        return "Counter = " + _counter;
-    }
+//     function retrieve() {
+//         return "Counter = " + _counter;
+//     }
 
-    return {
-        add,
-        retrieve
-    };
-}
+//     return {
+//         add,
+//         retrieve
+//     };
+// }
 
-const c = counter();
-c.add(5);
-c.add(10);
-console.log(c.retrieve());
+// const c = counter();
+// c.add(5);
+// c.add(10);
+// console.log(c.retrieve());
+
+
+// What is Module pattern? (Generally asked in senior role interviews)
+// In Module pattern, we have an IIFE that returns an object containing a public
+// method that can further access the private method. There's no way to access the
+// private method directly.
+// var Module  = (function () {
+//     function privateMethod() {
+//         // do something
+//         console.log('private');
+//     }
+
+//     return {
+//         publicMethod: function () {
+//             // can call private method()
+//             console.log('public');
+//         },
+//     };
+// })();
+// Module.publicMethod(); // public
+// Module.privateMethod(); // Uncaught TypeError: Module.privateMethod is not a function
+// Read More: https://www.patterns.dev/vanilla/module-pattern
+
+
+// Make this code run only once:
+// let view;
+// function likeTheVideo() {
+//     view = "Mohak Trivedi";
+//     console.log("Subscribe to ", view);
+// }
+// likeTheVideo();
+// likeTheVideo();
+// likeTheVideo();
+// likeTheVideo();
+// likeTheVideo();
+// likeTheVideo();
+
+// Answer:
+// let view;
+// function likeTheVideo() {
+//     let called = 0;
+
+//     return function () {
+//         if(called > 0) {
+//             console.log("Already subscribed to Mohak Trivedi");
+//         } else {
+//             view = "Mohak Trivedi";
+//             console.log("Subscribe to ", view);
+
+//             called++;
+//         }        
+//     }
+// }
+
+// let isSubscribed = likeTheVideo();
+// isSubscribed();
+// isSubscribed();
+// isSubscribed();
+// isSubscribed();
+// isSubscribed();
+// isSubscribed();
+
+
+// Do it in a more generic way:
+// We can do it by using the Lodash Function: Once
+// But, in interviews, it isn't allowed to use it, so we will create its polyfill:
+// Once Lodash Function Polyfill:
+// function once (func, context) {
+//     let ran;
+
+//     return function() {
+//         if (func) {
+//             ran = func.apply(context || this, arguments); // calling function with
+//             // required arguments and storing returned value in ran
+
+//             func = null; // so that if->false next time -> only first call runs.
+//         }
+
+//         return ran;
+//     };
+// }
+
+// // Runs multiple times:
+// const hello = () => console.log('hello');
+// hello();
+// hello();
+// hello();
+// hello();
+
+// But after wrapping with once(), it runs only once even though called multiple times:
+// const hello = once(() => console.log('hello'));
+// hello();
+// hello();
+// hello();
+// hello();
+// Also runs with parameterized function:
+// const hello = once((a, b) => console.log('hello', a, b));
+// hello(1, 2);
+// hello(1, 2);
+// hello(1, 2);
+// hello(1, 2);
+
+
+// Memoize Polyfill
+
+// const clumsyProduct = (num1, num2) => {
+//     // for-loop for unomptimization
+//     for (let i = 1; i <= 100000000; i++) {
+//     }
+
+//     return num1 * num2;
+// }
+
+// console.time("First call");
+// console.log(clumsyProduct(9467, 7649));
+// console.timeEnd("First call"); // 51 ms
+
+// console.time("Second call");
+// console.log(clumsyProduct(9467, 7649));
+// console.timeEnd("Second call"); // 38 ms
+
+// How do we minimize the above time?
+
+// Answer:
+// Since the arguments of the function calls are same, we must cache the results
+// of the first call somewhere so that we can re-use it as required. 
+// function myMemoize (fn, context) {
+//     const res = {}; // to cache the result from first function call made with particular arguments
+//     // stored in the form {arguments1: return value generated1, arguments2: return value generated2, etc..}
+    
+//     return function (...args) { // ...args spreads current arguments
+//         var argsCache = JSON.stringify(args); // store arguments in a JSON string
+
+//         if(!res[argsCache]) { // current args not in cache -> called first time
+//             res[argsCache] = fn.call(context || this, ...args); // make the call and cache it 
+//         }
+
+//         return res[argsCache];
+//     }
+// }
+
+// const clumsyProduct = (num1, num2) => {
+//     // for-loop for unomptimization
+//     for (let i = 1; i <= 100000000; i++) {
+//     }
+
+//     return num1 * num2;
+// }
+
+// const memoizedClumsyProduct = myMemoize(clumsyProduct);
+
+// console.time("First call");
+// console.log(memoizedClumsyProduct(9467, 7649));
+// console.timeEnd("First call"); // 39 ms
+
+// console.time("Second call");
+// console.log(memoizedClumsyProduct(9467, 7649));
+// console.timeEnd("Second call"); // 0.02 ms (taking way too less time now due to caching)
+
+
+// Difference between Closure and Scope
+// Closure refers to a function's ability to retain access to variables in its 
+// lexical scope even after that scope has closed.
+// scope refers to the visibility and accessibility of variables within a specific 
+// context, such as global scope, function scope, or block scope.
