@@ -253,3 +253,29 @@
 // i for each timeout callback. This is why even though the for loop completes 
 // almost instantly, the setTimeout functions are able to access the correct value 
 // of i at the time they were created.
+
+
+// How would you use a Closure to create a private counter?
+// Private counter means we must not directly manipulate the value of counter
+// we must do it via functions.
+function counter () {
+    var _counter = 0; // _variableName is naming convention for private variables
+
+    function add(increment) {
+        _counter += increment;
+    }
+
+    function retrieve() {
+        return "Counter = " + _counter;
+    }
+
+    return {
+        add,
+        retrieve
+    };
+}
+
+const c = counter();
+c.add(5);
+c.add(10);
+console.log(c.retrieve());
