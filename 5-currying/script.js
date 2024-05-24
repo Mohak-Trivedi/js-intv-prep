@@ -23,3 +23,35 @@
 //     }
 // }
 // console.log(sum(2)(6)(1));
+
+
+// Question - 
+/* 
+evaluate("sum")(4)(2) -> 6
+evaluate("multiply")(4)(2) -> 8
+evaluate("divide")(4)(2) -> 2
+evaluate("subtract")(4)(2) -> 2
+ */
+
+// function evaluate (oper) {
+//     return function (num1) {
+//         return function (num2) {
+//             switch (oper) {
+//                 case 'sum':
+//                     return num1 + num2;
+//                 case 'multiply':
+//                     return num1 * num2;
+//                 case 'divide':
+//                     return num1 / num2;
+//                 case 'subtract':
+//                     return num1 - num2;
+//             }
+//         }
+//     }
+// }
+// console.log(evaluate("sum")(4)(2));
+// console.log(evaluate("multiply")(4)(2));
+// console.log(evaluate("divide")(4)(2));
+// console.log(evaluate("subtract")(4)(2));
+
+
