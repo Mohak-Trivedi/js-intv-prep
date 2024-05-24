@@ -55,3 +55,14 @@ evaluate("subtract")(4)(2) -> 2
 // console.log(evaluate("subtract")(4)(2));
 
 
+// Question - Infinite Currying -> sum(1)(2)(3)...(n)
+// sum(1)(2)(); -> 3
+// sum(1)(2)(4)(5)(); -> 12
+
+// function sum (a) {
+//     return function (b) {
+//         if (b) return sum (a + b);
+//         return a;
+//     }
+// }
+// console.log(sum(5)(2)(4)(8)()); // 19
