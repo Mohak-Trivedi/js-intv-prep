@@ -66,3 +66,25 @@ evaluate("subtract")(4)(2) -> 2
 //     }
 // }
 // console.log(sum(5)(2)(4)(8)()); // 19
+
+
+// Question - Currying v/s Partial Application
+
+// For sum of 3 numbers: 
+// Currying: sum(a)(b)(c)
+// function sum(a) {
+//     return function (b) {
+//         return function (c) {
+//             return a + b + c;
+//         }
+//     }
+// }
+// console.log(sum(2)(4)(7)); // 13
+
+// Partial Application: sum(a)(b, c)
+// function sum (a) {
+//     return function(b, c) {
+//         return a + b + c;
+//     }
+// }
+// console.log(sum(2)(4, 7)); // 13
