@@ -261,7 +261,7 @@
 // console.log(myName); // Mohak
 
 
-// What is nested destructuring?
+// Question - What is nested destructuring?
 // Suppose we have the following object:
 // let user = {
 //     name: "Mohak",
@@ -277,3 +277,60 @@
 // // How can you extract the nested value i.e. first name?
 // const { fullName:{first} } = user; // Nested Destructuring
 // console.log(first); // Mohak
+
+
+// Question - Predict the output:
+// function getItems(fruitList, ...args, favoriteFruit) {
+//     return [...fruitList, ...args, favoriteFruit];
+// }
+
+// console.log(getItems(["banana", "apple"], "pear", "orange"));
+
+// o/p: Uncaught SyntaxError: Rest parameter must be last formal parameter
+
+
+// Question - Predict the output:
+// function getItems(fruitList, favoriteFruit, ...args) {
+//     return [...fruitList, ...args, favoriteFruit];
+// }
+
+// console.log(getItems(["banana", "apple"], "pear", "orange"));
+
+// o/p: ['banana', 'apple', 'orange', 'pear']
+
+// Explanation:
+// Spread parameter is allowed to be non-last, no errors in return line.
+// Function has:-
+// fruitList=["banana", "apple"], favoriteFruit="pear", args=["orange"]
+// Hence, return: ['banana', 'apple', 'orange', 'pear']
+
+
+// Question - Predict the output:
+// let c = { greeting: "Hey!" };
+// let d;
+
+// d = c;
+// c.greeting = "Hello";
+// console.log(d.greeting);
+
+// o/p: Hello
+
+// Explanation:
+// At d = c, we don't provide a copy but a reference to the object.
+// Hence, any change made to the object will be reflected at all variables storing
+// the reference.
+
+
+// Question - Predict the output:
+// console.log({ a: 1 } == { a: 1});
+// console.log({ a: 1 } === { a: 1});
+
+// o/p:
+// false
+// false
+
+// Explanation:
+// In JS, objects are equal only when they have the same reference.
+// In both of the cases mentioned in the above question, we see that 
+// the objects being compared are different objects even though their property 
+// and value are the same.
