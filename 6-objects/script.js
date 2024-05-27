@@ -169,3 +169,111 @@
 // // "[object Object]" instead of the actual object in the string form.
 // console.log(localStorage.getItem("test")); // string format
 // console.log(JSON.parse(localStorage.getItem("test"))); // object
+
+
+// Question - Predict the output:
+// console.log([ ..."Lydia" ]);
+
+// o/p: ['L', 'y', 'd', 'i', 'a']
+
+
+// Question - Predict the output:
+// const user = { name: "Lydia", age: 21 };
+// const admin = { admin: true, ...user };
+// console.log(admin);
+
+// o/p: {admin: true, name: 'Lydia', age: 21}
+
+
+// Question - Predict the output:
+
+// const settings = {
+//     username: "Mohak",
+//     level: 19,
+//     health: 90,
+// };
+
+// const data = JSON.stringify(settings, ["level", "health"]);
+// console.log(data);
+
+// O/p: {"level":19,"health":90}
+
+// Explanation:
+// It stringifies only the "level" and "health" properties as mentioned
+
+
+// Question: Predict the output:
+// const shape = {
+//     radius: 10,
+//     diameter() {
+//         return this.radius  * 2;
+//     },
+//     perimeter: () => 2 * Math.PI * this.radius,
+// };
+
+// console.log(shape.diameter());
+// console.log(shape.perimeter());
+
+// o/p:
+// 20
+// NaN
+
+// Explanation:
+// We get 20 for shape.diameter() as this.radius -> radius of shape object, 
+// because diameter() is a normal function.
+// We get NaN for shape.perimeter() as this.radius -> undefined, because perimeter()
+// is an arrow function defined in an object so in it, this -> window object
+// instead of the shape object. So, 2 * Math.PI * undefined evaluates to NaN.
+
+
+// Question: What is destructuring in objects?
+// let user = {
+//     name: "Mohak",
+//     age: 25,
+// };
+
+// // Object Destructuring : Extracting specific property(ies) of an object.
+// const { name } = user;
+// console.log(name); // Mohak
+
+
+// Question - How to rename the property name in the extracted version 
+// while object destructuring, as the below code gives an error?
+// let user = {
+//     name: "Mohak",
+//     age: 25,
+// };
+
+// const name = "Mohak Trivedi";
+
+// const { name } = user; // Uncaught SyntaxError: Identifier 'name' has already been declared
+// console.log(name); 
+
+// Answer:
+// let user = {
+//     name: "Mohak",
+//     age: 25,
+// };
+
+// const name = "Mohak Trivedi";
+
+// const { name: myName } = user;
+// console.log(myName); // Mohak
+
+
+// What is nested destructuring?
+// Suppose we have the following object:
+// let user = {
+//     name: "Mohak",
+//     age: 25,
+//     fullName: {
+//         first: "Mohak",
+//         last: "Trivedi",
+//     }
+// };
+// // To extract the non-nested value fullName:
+// const { fullName } = user;
+// console.log(fullName); // {first: 'Mohak', last: 'Trivedi'}
+// // How can you extract the nested value i.e. first name?
+// const { fullName:{first} } = user; // Nested Destructuring
+// console.log(first); // Mohak
