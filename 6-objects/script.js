@@ -334,3 +334,119 @@
 // In both of the cases mentioned in the above question, we see that 
 // the objects being compared are different objects even though their property 
 // and value are the same.
+
+
+// Question: Predict the output:
+// let person = { name: "Lydia" };
+// const members = [person];
+// person = null;
+// console.log(members);
+
+// o/p: [{name: 'Lydia'}]
+
+// Explanation:
+// Objects are reference types in JavaScript, so setting person to null 
+// does not affect the reference stored in members, resulting in the original object 
+// being logged.
+// If instead we did:
+// person.name = null;
+// we affect the the reference stored in members, resulting in:
+// [{name: null}]
+
+
+// Question: Predict the output:
+// const value = { number: 10 };
+
+// const multiply = (x = { ...value }) => {
+//     console.log((x.number *= 2));
+// };
+
+// multiply();
+// multiply();
+// multiply(value);
+// multiply(value);
+
+// o/p:
+// 20
+// 20
+// 20
+// 40
+
+// Explanation:
+// For the 1st 2 calls, a copy of `value` is created and used by multiply, so 
+// actual object remain same, and each time we just update copy object value 
+// from 10 to 20.
+// For the 3rd call, the reference of `value` is used by multiply, so actual
+// object's number property is doubled from 10 to 20.
+// For the 3rd call, the reference of `value` is used by multiply, so actual
+// object's number property is doubled from 20 to 40.
+
+
+// Question - Predict the output:
+// function changeAgeAndReference(person) {
+//     person.age = 25;
+//     person = {
+//         name: "John",
+//         age: 50,
+//     };
+
+//     return person;
+// }
+
+// const personObj1 = {
+//     name: "Alex",
+//     age: 30,
+// };
+
+// const personObj2 = changeAgeAndReference(personObj1);
+
+// console.log(personObj1); 
+// console.log(personObj2); 
+
+// o/p:
+// {name: 'Alex', age: 25}
+// {name: 'John', age: 50}
+
+// Explanation:
+// Reference to personObj1 is passed to changeAgeAndReference()
+// person.age = 25; changes the age value of the object referred by personObj1.
+// So, personObj1 = {name: 'Alex', age: 25}
+// person = { name: "John", age: 50, }; creates a new object and stores its reference
+// in person, and this is returned by the function and stored in personObj2.
+// So, personObj2 = { name: 'John', age: 50 }
+
+
+// Question - What is shallow copy and deep copy?
+// Shallow copy: When we copy an object to another object but that another object
+// has still got the reference to at least some of the properties of the original
+// object.
+// Deep copy: When we completely clone an object to another, so we don't have any
+// references to the original object.
+
+
+// Question - How to create a deep copy of an object? / How to clone an object?
+// let user = {
+//     name: "Mohak Trivedi",
+//     age: 25,
+// };
+
+// Method 1: Using Object.assign()
+// const objClone = Object.assign({}, user);
+// console.log(user, objClone); // {name: 'Mohak Trivedi', age: 25} {name: 'Mohak Trivedi', age: 25}
+// objClone.name = "Ashutosh"; 
+// console.log(user, objClone); // {name: 'Mohak Trivedi', age: 25} {name: 'Ashutosh', age: 25}
+// As we saw, the original object didn't get affected.
+
+// Method 2: Using JSON.stringify() and JSON.parse()
+// const objClone = JSON.parse(JSON.stringify(user));
+// console.log(user, objClone); // {name: 'Mohak Trivedi', age: 25} {name: 'Mohak Trivedi', age: 25}
+// objClone.name = "Ashutosh"; 
+// console.log(user, objClone); // {name: 'Mohak Trivedi', age: 25} {name: 'Ashutosh', age: 25}
+// As we saw, the original object didn't get affected.
+
+// Method 3: Using Object Destructuring:
+// const objClone = { ...user };
+// console.log(user, objClone); // {name: 'Mohak Trivedi', age: 25} {name: 'Mohak Trivedi', age: 25}
+// objClone.name = "Ashutosh"; 
+// console.log(user, objClone); // {name: 'Mohak Trivedi', age: 25} {name: 'Ashutosh', age: 25}
+// As we saw, the original object didn't get affected.
