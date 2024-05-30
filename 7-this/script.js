@@ -216,3 +216,103 @@
 // this in greet() -> user object
 // this in farewell() -> Window object
 
+
+// Question - Create an object calculator
+// let calculator = {
+//     // code here
+// };
+// calculator.read();
+// console.log(calculator.sum());
+// console.log(calculator.mul());
+
+// Answer:
+// let calculator = {
+//     read() {
+//         this.a = +prompt("a = ", 0); // + as prefix to convert from String to Number
+//         this.b = +prompt("b = ", 0);
+//     },
+
+//     sum() {
+//         return this.a + this.b;
+//     },
+
+//     mul() {
+//         return this.a * this.b;
+//     }
+// };
+// calculator.read();
+// console.log(calculator.sum());
+// console.log(calculator.mul());
+
+
+// Question - Predict the output:
+// var length = 4;
+// function callback() {
+//     console.log(this.length); 
+// }
+// const object = {
+//     length: 5,
+//     method(fn) {
+//         fn();
+//     },
+// };
+// object.method(callback);
+
+// o/p: 4
+
+// Explanation:
+// callback() is passed to method() as fn()
+// So, this -> Window object
+// because callback() is not a method of any defined object.
+// Since, length is defined using var, Window has access to it.
+// Hence, this.length -> Window.length -> 4 
+
+
+// Question - [SR] - Predict the output:
+// var length = 4;
+// function callback() {
+//     console.log(this.length); 
+// }
+// const object = {
+//     length: 5,
+//     method() {
+//         arguments[0]();
+//     },
+// };
+// object.method(callback, 2, 3); 
+
+// o/p: 3
+
+// Explanation:
+// arguments -> [callback, 2, 3]
+// arguments[0] -> callback, So arguments[0]() will invoke callback()
+// Since, this callback() is a normal function present in arguments[] array
+// And, in JS, array too is an object, and in it length is an inbuilt property
+// whose value reflects the current length of the array.
+// So, this.length -> length of [callback, 2, 3] -> 3
+
+
+// Question - Implement calc
+// const result = calc.add(10).multiply(5).subtract(30).add(10);
+// console.log(result.total);
+
+// Answer:
+// The main thing is to return the object from each method so that we are able to 
+// again invoke any of the methods of the calc object.
+// const calc = {
+//     total: 0,
+//     add(a) {
+//         this.total += a;
+//         return this;
+//     },
+//     subtract(a) {
+//         this.total -= a;
+//         return this;
+//     },
+//     multiply(a) {
+//         this.total *= a;
+//         return this;
+//     },
+// };
+// const result = calc.add(10).multiply(5).subtract(30).add(10);
+// console.log(result.total);
