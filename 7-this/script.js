@@ -139,7 +139,7 @@
 // Since, Window doesn't have 'name' property defined, we get blank o/p
 
 
-// Question - How can you fix the above code such that we get "John"?
+// Question - [TRICKY] - How can you fix the above code such that we get "John"?
 // Since we want this to refer to the object being returned instead of referring
 // to the Window object, we must ensure that it must be present in a normal function 
 // that is a method of that object. So, make ref a normal function that returns 
@@ -158,3 +158,61 @@
 // let user = makeUser();
 
 // console.log(user.ref().name);
+
+
+// Question - Predict the output:
+// const user = {
+//     name: "Mohak",
+//     logMessage() {
+//         console.log(this.name);
+//     },
+// };
+// setTimeout(user.logMessage, 1000);
+
+// O/p: [BLANK OUTPUT]
+
+// Explanation:
+// We are not calling the logMessage() function, rather passing it as a callback
+// to setTimeout(). So, the context (this) of the logMessage method is lost. 
+// In JavaScript, when you pass a method as a reference like this, the method 
+// loses its original object context unless it is bound explicitly. So, 
+// this -> Window object
+// Since, there's no 'name' property defined for Window, we get BLANK O/P.
+
+
+// Question - [TRICKY] - Fix the code such that we get "Mohak" after 1 sec as the o/p.
+
+// Call the logMessage in the callback passed to setTimeout().
+// const user = {
+//     name: "Mohak",
+//     logMessage() {
+//         console.log(this.name);
+//     },
+// };
+// setTimeout(function () {
+//     user.logMessage();
+// }, 1000);
+
+
+// Question - Predict the output:
+// const user = {
+//     name: "Mohak",
+//     greet() {
+//         return `Hello, ${this.name}`;
+//     },
+//     farewell: () => {
+//         return `Goodbye, ${this.name}`;
+//     },
+// };
+
+// console.log(user.greet());
+// console.log(user.farewell());
+
+// O/P:
+// Hello, Mohak
+// Goodbye, 
+
+// Explanation:
+// this in greet() -> user object
+// this in farewell() -> Window object
+
