@@ -182,15 +182,15 @@
 
 
 // Question - Bound function - Predict the output:
-function f() {
-    console.log(this);
-}
+// function f() {
+//     console.log(this);
+// }
 
-let user = {
-    g: f.bind(null),
-};
+// let user = {
+//     g: f.bind(null),
+// };
 
-user.g();   
+// user.g();   
 
 // o/p: Window
 
@@ -198,3 +198,21 @@ user.g();
 // In non-strict mode, if a function is bound to null i.e. the this within it is
 // made to refer to null, then the this within it is actually made to refer to 
 // the Window object.
+
+
+// Question - Bind Chaining - Predict the output:
+function f () {
+    console.log(this.name);
+}
+
+f = f.bind({ name: "John" }).bind({ name: "Ann" });
+
+f();
+
+// O/p:
+// John
+
+// Explanation:
+// There's no such thing as bind chaining. Once a function gets bound to an object
+// It can't be again bound to another object.
+// Hence, the 2nd bind() on f() has no effect, and f() is bound to {name: "John"}
