@@ -201,13 +201,13 @@
 
 
 // Question - Bind Chaining - Predict the output:
-function f () {
-    console.log(this.name);
-}
+// function f () {
+//     console.log(this.name);
+// }
 
-f = f.bind({ name: "John" }).bind({ name: "Ann" });
+// f = f.bind({ name: "John" }).bind({ name: "Ann" });
 
-f();
+// f();
 
 // O/p:
 // John
@@ -216,3 +216,53 @@ f();
 // There's no such thing as bind chaining. Once a function gets bound to an object
 // It can't be again bound to another object.
 // Hence, the 2nd bind() on f() has no effect, and f() is bound to {name: "John"}
+
+
+// Question - Fix the line 241 to make the code work properly.
+
+// function checkPassword (success, failed) {
+//     // console.log(success, failed);
+//     let password = prompt("Password?", "");
+//     if (password == "Roadside Coder") success();
+//     else failed();
+// }
+
+// let user = {
+//     name: "Mohak Trivedi",
+
+//     loginSuccessful() {
+//         console.log(`${this.name} logged in successfully`);
+//     },
+
+//     loginFailed() {
+//         console.log(`${this.name} failed to log in`);
+//     },
+// };
+
+// checkPassword(user.loginSuccessful, user.loginFailed);
+
+// Answer:
+// checkPassword(user.loginSuccessful.bind(user), user.loginFailed.bind(user));
+
+
+// Question - Partial application for login function 
+// What is the correct way to call checkPassword?
+
+// function checkPassword (ok, fail) {
+//     let password = prompt("Password?", "");
+//     if ( password == "Roadside Coder" ) ok();
+//     else fail();
+// } 
+
+// let user = {
+//     name: "Mohak Trivedi",
+
+//     login(result) {
+//         console.log(this.name + (result ? " logged in successfully" : " failed to log in."))
+//     },
+// };
+
+// checkPassword(?, ?);
+
+// Answer:
+// checkPassword(user.login.bind(user, true), user.login.bind(user, false));
