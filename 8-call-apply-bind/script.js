@@ -266,3 +266,95 @@
 
 // Answer:
 // checkPassword(user.login.bind(user, true), user.login.bind(user, false));
+
+
+// Question - Explicit Binding with Arrow Function
+// const age = 10;
+
+// var person = {
+//     name: "Mohak",
+//     age: 25,
+//     getAgeArrow: () => console.log(this.age),
+//     getAge: function () {
+//         console.log(this.age);
+//     },
+// };
+
+// var person2 = { age: 24 };
+// person.getAgeArrow.call(person2);
+// person.getAge.call(person2);
+
+// o/p:
+// undefined
+// 25
+
+// Explanation:
+// call() apply() bind() don't work on arrow functions. Hence, getAgeArrow()'s this
+// refers to Window object.
+
+
+// Question - Polyfill for call() 
+
+// let car1 = {
+//     color: "red",
+//     company: "Ferrari",
+// };
+
+// function purchaseCar (currency, price) {
+//     console.log(
+//         `I have purchased ${this.color} - ${this.company} car for ${currency} ${price}.`
+//     );
+// }
+
+// // purchaseCar.call(car1, "₹", "50000000");
+
+// Function.prototype.myCall = function (context={}, ...args) {    
+//     // Edge case - call() not called on function.
+//     if(typeof this !== 'function') {
+//         throw new Error(this + "It's not callable.");
+//     }
+
+//     // add the function upon which call() is called to the object passed as context
+//     context.fn = this;
+
+//     // invoke the function added
+//     context.fn(...args);
+// }
+
+// purchaseCar.myCall(car1, "₹", "50000000");
+
+
+// Question - Polyfill for apply()
+
+let car1 = {
+    color: "red",
+    company: "Ferrari",
+};
+
+function purchaseCar (currency, price) {
+    console.log(
+        `I have purchased ${this.color} - ${this.company} car for ${currency} ${price}.`
+    );
+}
+
+// purchaseCar.apply(car1, ["₹", "50000000"]);
+
+Function.prototype.myApply = function (context={}, args=[]) {    
+    // Edge case - apply() not called on function.
+    if(typeof this !== 'function') {
+        throw new Error(this + "It's not callable.");
+    }
+
+    // Edge case - passed something else instead of array of arguments
+    if(!Array.isArray(args)) {
+        throw new TypeError("CreateListFromArrayLike called on non-object");
+    }
+
+    // add the function upon which call() is called to the object passed as context
+    context.fn = this;
+
+    // invoke the function added
+    context.fn(...args);
+}
+
+purchaseCar.myApply(car1, ["₹", "50000000"]);
