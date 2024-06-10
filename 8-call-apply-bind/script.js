@@ -362,16 +362,16 @@
 
 // Question - Polyfill for bind()
 
-let car1 = {
-    color: "red",
-    company: "Ferrari",
-};
+// let car1 = {
+//     color: "red",
+//     company: "Ferrari",
+// };
 
-function purchaseCar (currency, price) {
-    console.log(
-        `I have purchased ${this.color} - ${this.company} car for ${currency} ${price}.`
-    );
-}
+// function purchaseCar (currency, price) {
+//     console.log(
+//         `I have purchased ${this.color} - ${this.company} car for ${currency} ${price}.`
+//     );
+// }
 
 // case 1:
 // let newFunc = purchaseCar.bind(car1);
@@ -383,27 +383,27 @@ function purchaseCar (currency, price) {
 // let newFunc = purchaseCar.bind(car1, "₹");
 // newFunc(50000000);
 
-Function.prototype.myBind = function (context={}, ...args) {    
-    // Edge case - bind() not called on function.
-    if(typeof this !== 'function') {
-        throw new Error(this + "cannot be bound as it's not callable.");
-    }
+// Function.prototype.myBind = function (context={}, ...args) {    
+//     // Edge case - bind() not called on function.
+//     if(typeof this !== 'function') {
+//         throw new Error(this + "cannot be bound as it's not callable.");
+//     }
 
-    // add the function upon which bind() is called to the object passed as context
-    context.fn = this;
+//     // add the function upon which bind() is called to the object passed as context
+//     context.fn = this;
 
-    // return a function that, when called, will invoke the original function 
-    // with the specified context and arguments.
-    return function (...newArgs) {
-        return context.fn(...args, ...newArgs);
-    };
-    // When myBind() is called, it returns a new function. This new function can 
-    // be called later with additional arguments (newArgs).
-    // The args parameter in the outer function captures any arguments passed to 
-    // myBind when it is called.
-    // The newArgs parameter in the inner function captures any arguments passed 
-    // to the returned function when it is called later.
-}
+//     // return a function that, when called, will invoke the original function 
+//     // with the specified context and arguments.
+//     return function (...newArgs) {
+//         return context.fn(...args, ...newArgs);
+//     };
+//     // When myBind() is called, it returns a new function. This new function can 
+//     // be called later with additional arguments (newArgs).
+//     // The args parameter in the outer function captures any arguments passed to 
+//     // myBind when it is called.
+//     // The newArgs parameter in the inner function captures any arguments passed 
+//     // to the returned function when it is called later.
+// }
 
 // case 1:
 // let newFunc = purchaseCar.myBind(car1);
