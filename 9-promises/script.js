@@ -220,8 +220,80 @@
 //     });
 // });
 
-// This is called as Callback Hell.
+// This is called as Callback Hell/Pyramid of Doom.
 // This makes our code less readable and hard to maintain as well, and can
 // cause difficulties while debugging as well.
 // Hence, we have Promises!
 
+
+// Promises:
+// A Promise in JS represents the upcoming completion or failure of an asynchronous
+// event, and its resulting value.
+// e.g. A child promises his mother to complete his HW. If he fulfils his promise
+// he will get to play, if he rejects his promise then he won't get to play.
+// e.g.:
+// console.log('start');
+
+// const sub = new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//         const result = true; // toggle to false and check o/p again
+//         if(result) {
+//             resolve("Subscribe to Mohak Trivedi");
+//         } else {
+//             reject(new Error("Why haven't you subscribed to Mohak Trivedi?"));
+//         }
+//     }, 2000);
+// });
+
+// console.log(sub); 
+// Notice how PromiseState changes from "pending" to "fulfilled" in console 
+// after 2 secs when the result is true, and "rejected" when result is false
+
+// sub.then((res) => {
+//     console.log(res);
+// }).catch((err) => {
+//     console.log(err);
+// });
+
+// console.log('stop');
+
+// o/p:
+// start
+// Promise {<pending>} (PromiseState becomes "fulfilled" after 2s, is "pending" before)
+// stop
+// Subscribe to Mohak Trivedi (this comes after 2s)
+
+
+// We can even resolve a Promise directly.
+// console.log('Start');
+
+// const sub = Promise.resolve("Subscribed to Mohak Trivedi");
+// console.log(sub);
+// sub.then((res) => console.log(res)).catch((err) => console.log(err));
+
+// console.log('End');
+
+// o/p:
+// Start
+// Promise {<fulfilled>: 'Subscribed to Mohak Trivedi'}
+// End
+// Subscribed to Mohak Trivedi
+
+// Notice we got fulfilled directly instead of Pending first and then fulfilled
+
+// Similarly, we can reject a Promise directly.
+// console.log('Start');
+
+// const sub = Promise.reject("Why haven't you subscribed to Mohak Trivedi");
+// console.log(sub);
+// sub.then((res) => console.log(res)).catch((err) => console.log(err));
+
+// console.log('End');
+
+// o/p:
+// Start
+// Promise {<rejected>: "Why haven't you subscribed to Mohak Trivedi"}
+// End
+// Why haven't you subscribed to Mohak Trivedi
+
+// Notice we got rejected directly instead of Pending first and then rejected
