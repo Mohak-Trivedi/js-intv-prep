@@ -407,7 +407,7 @@ function shareTheVideo(video) {
 
 // 1. Promise.all():
 // Runs all the Promises provided to it parallely and returns an array of all the
-// fulfilled Promises, but it fails even if a single Promise gets failed.
+// fulfilled Promises, but it fails (runs the catch() code) even if a single Promise gets failed.
 // Run once by replacing 'resolve' in likeTheVideos() with 'reject'
 
 // Promise.all([
@@ -431,16 +431,46 @@ function shareTheVideo(video) {
 // 'resolve' with 'reject', you'll now see its error message as race() returns
 // the first Promise resolved or rejected.
 
-Promise.race([
-    importantAction('Mohak Trivedi'),
+// Promise.race([
+//     importantAction('Mohak Trivedi'),
+//     likeTheVideo("JS interview questions"),
+//     shareTheVideo("JS interview questions")
+// ]).then((res) => {
+//     console.log(res);
+// }).catch((err) => {
+//     console.error("Error: Promises Failed.", err);
+// });
+
+// console.log('stop');
+
+// 3. Promise.allSettled()
+// Same as Promise.all() but Promise rejection doesn't cause any failure here, it
+// returns all promises regardless of their results.
+// Promise.allSettled([
+//     importantAction('Mohak Trivedi'),
+//     likeTheVideo("JS interview questions"),
+//     shareTheVideo("JS interview questions")
+// ]).then((res) => {
+//     console.log(res);
+// }).catch((err) => {
+//     console.error("Error: Promises Failed.", err);
+// });
+
+// console.log('stop');
+
+// 4. Promise.any()
+// Same as Promise.race() but returns only the first resolved Promise result, and
+// ignores the rejected ones even if it is the first completed one.
+// In case, none of the Promises are resolved, it gives an error:
+// AggregateError: All promises were rejected
+Promise.any([
+    importantAction("Mohak Trivedi"),
     likeTheVideo("JS interview questions"),
     shareTheVideo("JS interview questions")
 ]).then((res) => {
     console.log(res);
 }).catch((err) => {
-    console.error("Error: Promises Failed.", err);
+    console.error("Error: Promises Failed", err);
 });
 
 console.log('stop');
-
-// 3. Promise.allSettled()
