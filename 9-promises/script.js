@@ -333,31 +333,31 @@
 // console.log('stop');
 
 // Answer:
-console.log('start');
+// console.log('start');
 
-function importantAction(username) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(`Subscribe to ${username}`);
-        }, 1000);
-    });
-}
+// function importantAction(username) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             resolve(`Subscribe to ${username}`);
+//         }, 1000);
+//     });
+// }
 
-function likeTheVideo(video) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(`Like the ${video} video`);
-        }, 1000);
-    });
-}
+// function likeTheVideo(video) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             resolve(`Like the ${video} video`);
+//         }, 1000);
+//     });
+// }
 
-function shareTheVideo(video) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(`Share the ${video} video`);
-        }, 1000);
-    });
-}
+// function shareTheVideo(video) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             resolve(`Share the ${video} video`);
+//         }, 1000);
+//     });
+// }
 
 // importantAction('Mohak Trivedi').then((res) => {
 //     console.log(res);
@@ -506,18 +506,322 @@ function shareTheVideo(video) {
 // Since, we are not using then() and catch(), so, to handle errors, we must use
 // try-catch blocks. If any promise is rejected we move to the catch block and hence
 // the remaining portion of the try block remains unexecuted.
-const result = async () => {
-    try {
-        const message1 = await importantAction("Roadside Coder");
-        console.log(message1);
-        const message2 = await likeTheVideo("JS interview questions");
-        console.log(message2);
-        const message3 = await shareTheVideo("JS interview questions");
-        console.log(message3);
-    } catch(err) {
-        console.error("Error: Promises Failed", err);
-    }
-};
-result();
+// const result = async () => {
+//     try {
+//         const message1 = await importantAction("Roadside Coder");
+//         console.log(message1);
+//         const message2 = await likeTheVideo("JS interview questions");
+//         console.log(message2);
+//         const message3 = await shareTheVideo("JS interview questions");
+//         console.log(message3);
+//     } catch(err) {
+//         console.error("Error: Promises Failed", err);
+//     }
+// };
+// result();
 
-console.log('stop');
+// console.log('stop');
+// Note: Calling an async function returns a promise and that's why 'stop' gets
+// logged to the console before the messages defined in the async function even though
+// we have used await keyword inside the async function.
+
+
+//////////////////////////////////////////////////////////////////////////////
+// Interview Questions:
+// Question - Predict the output:
+// console.log('start');
+
+// const promise1 = new Promise((resolve, reject) => {
+//     console.log(1);
+//     resolve(2);
+// });
+
+// promise1.then((res) => {
+//     console.log(res);
+// });
+
+// console.log('end');
+
+// o/p:
+// start
+// 1
+// end
+// 2
+
+// Explanation:
+// We think, but, we don't get:
+// start
+// end
+// 1
+// 2
+// Because, promise is invoked before end, and in it console.log(1) is sync code
+// so, it gets executed, and only the async code i.e. resolve(2) gets executed
+// after the entire sync code.
+
+
+// Question - Predict the output:
+// console.log('start');
+
+// const promise1 = new Promise((resolve, reject) => {
+//     console.log(1);
+//     resolve(2);
+//     console.log(3);
+// });
+
+// promise1.then((res) => {
+//     console.log(res);
+// });
+
+// console.log('end'); 
+
+// o/p:
+// start
+// 1
+// 3
+// end
+// 2
+
+
+// Question - Predict the output:
+// console.log('start');
+
+// const promise1 = new Promise((resolve, reject) => {
+//     console.log(1);
+//     console.log(2);
+// });
+
+// promise1.then((res) => {
+//     console.log('Result: ' + res);
+// });
+
+// console.log('stop');
+
+// o/p:
+// start
+// 1
+// 2
+// stop
+
+// Explanation:
+// Since the Promise doesn't resolve anything, the code inside then() isn't executed.
+
+
+// Question - Predict the output:
+// console.log('start');
+
+// const fn = () => 
+//     new Promise((resolve, reject) => {
+//         console.log(1);
+//         resolve("success");
+//     });
+
+// console.log('middle');
+
+// fn().then((res) => {
+//     console.log(res);
+// });
+
+// console.log('end');
+
+// o/p:
+// start
+// middle
+// 1 
+// end
+// success
+
+
+// Question - Predict the output:
+// function job() {
+//     return new Promise(function (resolve, reject) {
+//         reject();
+//     });
+// }
+
+// let promise = job();
+
+// promise
+// .then(function () {
+//     console.log('success 1')
+// })
+// .then(function () {
+//     console.log('success 2')
+// })
+// .then(function () {
+//     console.log('success 3')
+// })
+// .catch(function () {
+//     console.log('error 1')
+// })
+// .then(function () {
+//     console.log('success 4')
+// });
+
+// o/p:
+// error 1
+// success 4
+
+
+// Question - Predict the output:
+// function job (state) {
+//     return new Promise(function (resolve, reject) {
+//         if(state) {
+//             resolve('success');
+//         } else {
+//             reject('error');
+//         }
+//     });
+// }
+
+// let promise = job(true);
+
+// promise
+// .then(function (data) {
+//     console.log(data);
+
+//     return job(false);
+// })
+// .catch(function (error) {
+//     console.log(error);
+
+//     return 'error caught';
+// })
+// .then(function (data) {
+//     console.log(data);
+
+//     return job(true);
+// })
+// .catch(function (error) {
+//     console.log(error);
+// });
+
+// o/p:
+// success
+// error
+// error caught
+
+// Explanation:
+// Since, there's not a then() in the end but a catch instead, even though the
+// promise resolves 'success' it doesn't gets logged.
+
+
+// Question - Predict the output:
+// function job(state) {
+//     return new Promise(function (resolve, reject) {
+//         if(state) {
+//             resolve('success');
+//         } else {
+//             reject('error');
+//         }
+//     });
+// }
+
+// let promise = job(true);
+
+// promise
+//     .then(function (data) {
+//         console.log(data);
+
+//         return job(true);
+//     })
+//     .then(function (data) {
+//         if(data !== 'victory') {
+//             throw "Defeat";
+//         }
+
+//         return job(true);
+//     })
+//     .then(function (data) {
+//         console.log(data);
+//     })
+//     .catch(function (error) {
+//         console.log(error);
+//         return job(false);
+//     })
+//     .then(function (data) {
+//         console.log(data);
+//         return job(true);
+//     })
+//     .catch(function (error) {
+//         console.log(error);
+//         return 'Error caught';
+//     })
+//     .then(function (data) {
+//         console.log(data);
+//         return new Error('test'); 
+//     })
+//     .then(function (data) {
+//         console.log("Success:", data.message);
+//     })
+//     .catch(function (data) {
+//         console.log('Error:', data.message);
+//     });
+
+// o/p:
+// success
+// Defeat
+// error
+// Error caught
+// Success: test
+
+// Explanation:
+// - throw will lead to executing the first catch block after it
+// - just like 'Error caught' is not a rejected promise, new Error('test') is also
+// not a rejected promise, hence, the next then() block will be executed.
+
+
+// Question - Promise Chaining:
+// Create a promise 'firstPromise' that resolves 'First!'
+// Create a promise 'secondPromise' that resolves our firstPromise
+// Then resolve secondPromise and pass its o/p to firstPromise, and then print
+// the result of firstPromise.
+// Basically, you must resolve the firstPromise via secondPromise.
+// The main purpose of this question is to judge whether you know Promise Chaining
+// or not.
+
+// Answer:
+// const firstPromise = new Promise((resolve, reject) => {
+//     resolve("First!");
+// });
+
+// const secondPromise = new Promise((resolve, reject) => {
+//     resolve(firstPromise);
+// });
+
+// secondPromise.then((res) => {
+//     return res;
+// }).then((res) => {
+//     console.log(res);
+// });
+
+
+// Question - Rewrite this example code using 'async/await' instead of '.then/catch'
+// function loadJson(url) {
+//     return fetch(url).then((response) => {
+//         if(response.status == 200) {
+//             return response.json();
+//         } else {
+//             throw new Error(response.status);
+//         }
+//     });
+// }
+
+// loadJson("https://fakeurl.com/no-such-user.json").catch((err) => 
+//     console.log(err);
+// );
+
+// Answer:
+// async function loadJson(url) {
+//     let response = await fetch(url);
+
+//     if(response.status == 200) {
+//         let json = response.json();
+//         return json;
+//     }
+
+//     throw new Error(response.status);
+// }
+
+// loadJson("https://fakeurl.com/no-such-user.json").catch((err) => 
+//     console.log(err);
+// );
