@@ -463,14 +463,61 @@ function shareTheVideo(video) {
 // ignores the rejected ones even if it is the first completed one.
 // In case, none of the Promises are resolved, it gives an error:
 // AggregateError: All promises were rejected
-Promise.any([
-    importantAction("Mohak Trivedi"),
-    likeTheVideo("JS interview questions"),
-    shareTheVideo("JS interview questions")
-]).then((res) => {
-    console.log(res);
-}).catch((err) => {
-    console.error("Error: Promises Failed", err);
-});
+// Promise.any([
+//     importantAction("Mohak Trivedi"),
+//     likeTheVideo("JS interview questions"),
+//     shareTheVideo("JS interview questions")
+// ]).then((res) => {
+//     console.log(res);
+// }).catch((err) => {
+//     console.error("Error: Promises Failed", err);
+// });
+
+// console.log('stop');
+
+
+// async await
+// Modern and more compact approach to execute asynchronous code.
+// Write the below code with async await:
+// importantAction('Mohak Trivedi').then((res) => {
+//     console.log(res);
+//     return likeTheVideo("JS interview questions");
+// }).then((res) => {
+//     console.log(res);
+//     return shareTheVideo("JS interview questions");
+// }).then((res) => {
+//     console.log(res);
+// }
+// ).catch((err) => {
+//     console.error("Error: Promises Failed", err);
+// });
+
+// Answer:
+// const message1 = importantAction("Roadside Coder");
+// The above line will store the promise object in message1, but we want the
+// fulfilled value sent by the promise to be stored in message1, so we use:
+// const message1 = await importantAction("Roadside Coder");
+// i.e. we include the 'await' keyword. This will execute the Promise and WAIT
+// while it is executing instead of proceeding with the next lines of code.
+// Only once the promise is fulfilled and its value is stored in message1, then
+// it will execute the next line of code. 
+// You can't use the await keyword directly, you need to have an 'async' function
+// for it.
+// Since, we are not using then() and catch(), so, to handle errors, we must use
+// try-catch blocks. If any promise is rejected we move to the catch block and hence
+// the remaining portion of the try block remains unexecuted.
+const result = async () => {
+    try {
+        const message1 = await importantAction("Roadside Coder");
+        console.log(message1);
+        const message2 = await likeTheVideo("JS interview questions");
+        console.log(message2);
+        const message3 = await shareTheVideo("JS interview questions");
+        console.log(message3);
+    } catch(err) {
+        console.error("Error: Promises Failed", err);
+    }
+};
+result();
 
 console.log('stop');
