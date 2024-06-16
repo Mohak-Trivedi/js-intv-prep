@@ -955,10 +955,15 @@
 //     })
 //     .catch((err) => console.error(err));
 // Hence, we need to cover the case of synchronous code in Promise executor.
+// Root Cause:
 // The reason we get the error in case of synchronous code is that since it is 
-// sync code the then() is never executed as the fulfilled value is directly 
-// given to the instance 'examplePromise'. Hence, onResolve doesn't get initialized
-// with the callback passed to then().
+// sync code the then() is executed after the resolve(). Hence, onResolve doesn't 
+// get initialized with the callback passed to then().
+// Solution:
+// In case of sync code, don't call in onResolve() in resolve() as it is not a function.
+// Have boolean variables that help us identify once we reach in then() that 
+// whether before reaching then() resolve() was called (i.e. sync code)
+// if yes: call onResolve() as it was not called in resolve()
 function PromisePolyfill (executor) {
     let onResolve, 
         onReject,
@@ -1003,7 +1008,7 @@ function PromisePolyfill (executor) {
     this.catch = function (callback) {
         onReject = callback;
 
-        // in case of sync code: then() is called later on i.e. after reject() 
+        // in case of sync code: catch() is called later on i.e. after reject() 
         // has been called.
         if(isRejected && !isCalled) { // after reject && not async
             isCalled = true;
@@ -1018,7 +1023,19 @@ function PromisePolyfill (executor) {
     } catch (err) {
         console.error(err);
     }
-} 
+}
+
+// case: Promise.resolve(2) called directly
+PromisePolyfill.resolve = (val) => 
+    new PromisePolyfill(function executor(resolve, reject) {
+        resolve(val);
+    });
+
+// case: Promise.reject(2) called directly
+PromisePolyfill.reject = (val) =>
+    new PromisePolyfill((resolve, reject) => {
+        reject(val);
+    });
 
 // Works well for both:
 const examplePromise = new PromisePolyfill((resolve, reject) => {
