@@ -474,10 +474,19 @@
 // });
 
 // console.log('stop');
+// The Promise.any() static method takes an iterable of promises as input and returns 
+// a single Promise. This returned promise fulfills when any of the input's promises 
+// fulfills, with this first fulfillment value. It rejects when all of the input's 
+// promises reject (including when an empty iterable is passed), with an AggregateError 
+// containing an array of rejection reasons.
 
 
 // async await
 // Modern and more compact approach to execute asynchronous code.
+// The async function declaration creates a binding of a new async function to a given 
+// name. The await keyword is permitted within the function body, enabling asynchronous, 
+// promise-based behavior to be written in a cleaner style and avoiding the need to 
+// explicitly configure promise chains.
 // Write the below code with async await:
 // importantAction('Mohak Trivedi').then((res) => {
 //     console.log(res);
@@ -825,3 +834,206 @@
 // loadJson("https://fakeurl.com/no-such-user.json").catch((err) => 
 //     console.log(err);
 // );
+
+
+// Question - Solve Promise Recursively
+
+// function importantAction(username) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             resolve(`Subscribe to ${username}`);
+//         }, 1000);
+//     });
+// }
+
+// function likeTheVideo(video) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             resolve(`Like the ${video} video`);
+//         }, 1000);
+//     });
+// }
+
+// function shareTheVideo(video) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             resolve(`Share the ${video} video`);
+//         }, 1000);
+//     });
+// }
+
+// function promRecurse(funcPromises) {
+//     // Write Implementation Here
+// }
+
+// promRecurse([
+//     importantAction("Mohak Trivedi"),
+//     likeTheVideo("JS interview questions"),
+//     shareTheVideo("JS interview questions")
+// ]);
+
+// // Answer:
+// function promRecurse(funcPromises) {
+//     // Write Implementation Here
+
+//     // Edge (Base) Case: No promise passed
+//     if(funcPromises.length === 0) return;
+
+//     // Get the current promise and remove it from the array
+//     const currPromise = funcPromises.shift();
+
+//     // Resolve the current promise
+//     currPromise.then((res) => console.log(res)).catch((err) => console.error(err));
+
+//     // Repeat the above steps for the remaining promises
+//     promRecurse(funcPromises);
+// }
+
+
+// Question - Promise Polyfill Implementation
+// function PromisePolyfill(executor) {
+//     // Write Here
+// }
+
+// const examplePromise = new PromisePolyfill((resolve, reject) => {
+//     setTimeout(() => {
+//         resolve(2);
+//     }, 1000);
+// });
+
+// examplePromise
+//     .then((res) => {
+//         console.log(res);
+//     })
+//     .catch((err) => console.error(err));
+
+// Answer:
+// What all is required in a Promise() ?
+// 1. executor i.e. the function (resolve, reject) => { // promise definition }
+// 2. resolve() used in promise definition 
+// 3. reject() used in promise definition
+// 4. .then() used in promise consumption
+// 5. .catch() used in promise consumption
+// function PromisePolyfill(executor) {
+//     // Write Here
+//     // the callbacks to be executed when promise is resolved (callback of then()) 
+//     // or rejected (callback of catch()).
+//     let onResolve, onReject;
+
+//     function resolve(value) {
+//         onResolve(value);
+//     }
+
+//     function reject(value) {
+//         onReject(value);
+//     }
+
+//     this.then = function (callback) {
+//         onResolve = callback;
+//         return this;
+//     };
+
+//     this.catch = function (callback) {
+//         onReject = callback;
+//         return this;
+//     };
+
+//     executor(resolve, reject);
+// }
+
+// However, the above polyfill will fail if we resolve/reject directly without
+// any async operation/setTimeout. 
+// Uncaught TypeError: onResolve is not a function
+// Because, the then() is never executed as the data is returned directly into 
+// the instance 'examplePromise'. e.g.:
+// const examplePromise = new PromisePolyfill((resolve, reject) => {
+//     resolve(2);
+// });
+// examplePromise
+//     .then((res) => {
+//         console.log(res);
+//     })
+//     .catch((err) => console.error(err));
+// Hence, we need to cover the case of synchronous code in Promise executor.
+// The reason we get the error in case of synchronous code is that since it is 
+// sync code the then() is never executed as the fulfilled value is directly 
+// given to the instance 'examplePromise'. Hence, onResolve doesn't get initialized
+// with the callback passed to then().
+function PromisePolyfill (executor) {
+    let onResolve, 
+        onReject,
+        isFulfilled = false,
+        isRejected = false,
+        isCalled = false,
+        value;
+
+    function resolve(val) {
+        isFulfilled = true;
+        value = val; // to be able to use later in then()
+
+        if (typeof onResolve === 'function') { // async code case
+            onResolve(val);
+            isCalled = true; // callback mentioned in then() is called
+        }
+    }
+
+    function reject(val) {
+        isRejected = true;
+        value = val;
+
+        if (typeof onReject === 'function') { // async code case
+            onReject(val);
+            isCalled = true; // callback mentioned in catch() is called
+        }
+    }
+
+    this.then = function (callback) {
+        onResolve = callback;
+
+        // in case of sync code: then() is called later on i.e. after resolve() 
+        // has been called.
+        if(isFulfilled && !isCalled) { // after resolve && not async
+            isCalled = true;
+            onResolve(value);
+        }
+
+        return this;
+    }
+
+    this.catch = function (callback) {
+        onReject = callback;
+
+        // in case of sync code: then() is called later on i.e. after reject() 
+        // has been called.
+        if(isRejected && !isCalled) { // after reject && not async
+            isCalled = true;
+            onReject(value);
+        }
+
+        return this;
+    }
+
+    try { // error handling for executor
+        executor(resolve, reject);
+    } catch (err) {
+        console.error(err);
+    }
+} 
+
+// Works well for both:
+const examplePromise = new PromisePolyfill((resolve, reject) => {
+    setTimeout(() => {
+        resolve(2);
+    }, 1000);
+});
+// as well as
+// const examplePromise = new PromisePolyfill((resolve, reject) => {
+//     resolve(2);
+// });
+// also use reject() in the above 2 cases.
+
+examplePromise
+    .then((res) => {
+        console.log(res);
+    })
+    .catch((err) => console.error(err));
