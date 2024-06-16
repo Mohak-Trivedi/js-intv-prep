@@ -890,7 +890,7 @@
 // }
 
 
-// Question - Promise Polyfill Implementation
+// Question - [SR] - Promise Polyfill Implementation
 // function PromisePolyfill(executor) {
 //     // Write Here
 // }
@@ -964,93 +964,227 @@
 // Have boolean variables that help us identify once we reach in then() that 
 // whether before reaching then() resolve() was called (i.e. sync code)
 // if yes: call onResolve() as it was not called in resolve()
-function PromisePolyfill (executor) {
-    let onResolve, 
-        onReject,
-        isFulfilled = false,
-        isRejected = false,
-        isCalled = false,
-        value;
+// function PromisePolyfill (executor) {
+//     let onResolve, 
+//         onReject,
+//         isFulfilled = false,
+//         isRejected = false,
+//         isCalled = false,
+//         value;
 
-    function resolve(val) {
-        isFulfilled = true;
-        value = val; // to be able to use later in then()
+//     function resolve(val) {
+//         isFulfilled = true;
+//         value = val; // to be able to use later in then()
 
-        if (typeof onResolve === 'function') { // async code case
-            onResolve(val);
-            isCalled = true; // callback mentioned in then() is called
+//         if (typeof onResolve === 'function') { // async code case
+//             onResolve(val);
+//             isCalled = true; // callback mentioned in then() is called
+//         }
+//     }
+
+//     function reject(val) {
+//         isRejected = true;
+//         value = val;
+
+//         if (typeof onReject === 'function') { // async code case
+//             onReject(val);
+//             isCalled = true; // callback mentioned in catch() is called
+//         }
+//     }
+
+//     this.then = function (callback) {
+//         onResolve = callback;
+
+//         // in case of sync code: then() is called later on i.e. after resolve() 
+//         // has been called.
+//         if(isFulfilled && !isCalled) { // after resolve && not async
+//             isCalled = true;
+//             onResolve(value);
+//         }
+
+//         return this;
+//     }
+
+//     this.catch = function (callback) {
+//         onReject = callback;
+
+//         // in case of sync code: catch() is called later on i.e. after reject() 
+//         // has been called.
+//         if(isRejected && !isCalled) { // after reject && not async
+//             isCalled = true;
+//             onReject(value);
+//         }
+
+//         return this;
+//     }
+
+//     try { // error handling for executor
+//         executor(resolve, reject);
+//     } catch (err) {
+//         console.error(err);
+//     }
+// }
+
+// // case: Promise.resolve(2) called directly
+// PromisePolyfill.resolve = (val) => 
+//     new PromisePolyfill(function executor(resolve, reject) {
+//         resolve(val);
+//     });
+
+// // case: Promise.reject(2) called directly
+// PromisePolyfill.reject = (val) =>
+//     new PromisePolyfill((resolve, reject) => {
+//         reject(val);
+//     });
+
+// // Works well for both:
+// const examplePromise = new PromisePolyfill((resolve, reject) => {
+//     setTimeout(() => {
+//         resolve(2);
+//     }, 1000);
+// });
+// // as well as
+// // const examplePromise = new PromisePolyfill((resolve, reject) => {
+// //     resolve(2);
+// // });
+// // also use reject() in the above 2 cases.
+
+// examplePromise
+//     .then((res) => {
+//         console.log(res);
+//     })
+//     .catch((err) => console.error(err));
+
+
+// Question - [IMP] - Promise.all() Polyfill Implementation
+// Promise.allPolyfill = (promises) => {
+//     return new Promise((resolve, reject) => {
+//         // Write Here
+//     });
+// }
+
+// console.log('start');
+
+// function importantAction(username) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             resolve(`Subscribe to ${username}`);
+//         }, 1000);
+//     });
+// }
+
+// function likeTheVideo(video) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             resolve(`Like the ${video} video`);
+//         }, 1000);
+//     });
+// }
+
+// function shareTheVideo(video) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             resolve(`Share the ${video} video`);
+//         }, 1000);
+//     });
+// }
+
+// Promise.all([
+//     importantAction('Mohak Trivedi'),
+//     likeTheVideo("JS interview questions"),
+//     shareTheVideo("JS interview questions")
+// ]).then((res) => {
+//     console.log(res);
+// }).catch((err) => {
+//     console.error("Error: Promises Failed.", err);
+// });
+
+// Promise.allPolyfill([
+//     importantAction('Mohak Trivedi'),
+//     likeTheVideo("JS interview questions"),
+//     shareTheVideo("JS interview questions")
+// ]).then((res) => {
+//     console.log(res);
+// }).catch((err) => {
+//     console.error("Error: Promises Failed.", err);
+// });
+
+// console.log('stop');
+
+// Answer:
+Promise.allPolyfill = (promises) => {
+    return new Promise((resolve, reject) => {
+        // Write Here
+        const results = []; // o/p is given in the form of an array
+
+        // Edge case: i/p array is empty
+        if(!promises.length) { 
+            // resolve with empty [] 
+            resolve(results); 
+            return;
         }
-    }
 
-    function reject(val) {
-        isRejected = true;
-        value = val;
+        // track pending promises, initially all
+        let pending = promises.length;
 
-        if (typeof onReject === 'function') { // async code case
-            onReject(val);
-            isCalled = true; // callback mentioned in catch() is called
-        }
-    }
+        // resolve each promise one-by-one
+        promises.forEach((promise, idx) => {
+            Promise.resolve(promise).then((res) => {
+                results[idx] = res;
 
-    this.then = function (callback) {
-        onResolve = callback;
-
-        // in case of sync code: then() is called later on i.e. after resolve() 
-        // has been called.
-        if(isFulfilled && !isCalled) { // after resolve && not async
-            isCalled = true;
-            onResolve(value);
-        }
-
-        return this;
-    }
-
-    this.catch = function (callback) {
-        onReject = callback;
-
-        // in case of sync code: catch() is called later on i.e. after reject() 
-        // has been called.
-        if(isRejected && !isCalled) { // after reject && not async
-            isCalled = true;
-            onReject(value);
-        }
-
-        return this;
-    }
-
-    try { // error handling for executor
-        executor(resolve, reject);
-    } catch (err) {
-        console.error(err);
-    }
+                pending--;
+                if(pending === 0) {
+                    resolve(results); // Promise.all() is resolved if no more promises are pending
+                }
+            }, reject);
+        });
+    });
 }
 
-// case: Promise.resolve(2) called directly
-PromisePolyfill.resolve = (val) => 
-    new PromisePolyfill(function executor(resolve, reject) {
-        resolve(val);
-    });
+console.log('start');
 
-// case: Promise.reject(2) called directly
-PromisePolyfill.reject = (val) =>
-    new PromisePolyfill((resolve, reject) => {
-        reject(val);
+function importantAction(username) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(`Subscribe to ${username}`);
+        }, 1000);
     });
+}
 
-// Works well for both:
-const examplePromise = new PromisePolyfill((resolve, reject) => {
-    setTimeout(() => {
-        resolve(2);
-    }, 1000);
+function likeTheVideo(video) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(`Like the ${video} video`);
+        }, 1000);
+    });
+}
+
+function shareTheVideo(video) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(`Share the ${video} video`);
+        }, 1000);
+    });
+}
+
+Promise.all([
+    importantAction('Mohak Trivedi'),
+    likeTheVideo("JS interview questions"),
+    shareTheVideo("JS interview questions")
+]).then((res) => {
+    console.log(res);
+}).catch((err) => {
+    console.error("Error: Promises Failed.", err);
 });
-// as well as
-// const examplePromise = new PromisePolyfill((resolve, reject) => {
-//     resolve(2);
-// });
-// also use reject() in the above 2 cases.
 
-examplePromise
-    .then((res) => {
-        console.log(res);
-    })
-    .catch((err) => console.error(err));
+Promise.allPolyfill([
+    importantAction('Mohak Trivedi'),
+    likeTheVideo("JS interview questions"),
+    shareTheVideo("JS interview questions")
+]).then((res) => {
+    console.log(res);
+}).catch((err) => {
+    console.error("Error: Promises Failed.", err);
+});
+
+console.log('stop');
