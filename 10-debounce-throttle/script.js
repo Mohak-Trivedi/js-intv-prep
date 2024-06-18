@@ -45,3 +45,48 @@
 // });
 
 
+// Question - Debounce Polyfill
+const btn = document.querySelector('.increment_btn');
+const btnPress = document.querySelector('.increment_pressed');
+const count = document.querySelector('.increment_count');
+
+var pressedCount = 0;
+var triggeredCount = 0;
+
+// Method 2: Using Debounce Polyfill
+// Requirements seen from Lodash debounce():
+// - Takes in : a callback and a time (delay)
+// - Returns: a debounced function
+const myDebounce = (cb, delay) => {
+    // Since we need to measure the time after every keystroke or button press,
+    // we need to maintain a timer.
+    let timer;
+
+    // ...args to rest the extra arguments that we pass to myDebouncedCount()
+    // that must also be passed to the callback
+    return function (...args) {
+        if(timer) clearTimeout(timer);
+        
+        timer = setTimeout(() => {
+            cb(...args);
+        }, delay);
+    }
+};
+
+const myDebouncedCount = myDebounce(() => {
+    count.innerHTML = ++triggeredCount;
+}, 800);
+
+btn.addEventListener('click', () => {
+    btnPress.innerHTML = ++pressedCount;
+    myDebouncedCount();
+});
+
+// What happens if we don't mention:
+// if(timer) clearTimeout(timer);
+// In that case, suppose, we press button 3 times before 800ms gap, callback
+// won't be executed at all, but, after 800ms pass after the 3rd click and we haven't 
+// made another click, then instead of executing callback only once i.e. for the
+// 3rd click, the callback is executed 3 times i.e. for all the 3 clicks.
+// This happens because the timeout of the previous clicks still exists as their
+// time hasn't exhausted yet and we made another click.
