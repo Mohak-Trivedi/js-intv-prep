@@ -1112,79 +1112,79 @@
 // console.log('stop');
 
 // Answer:
-Promise.allPolyfill = (promises) => {
-    return new Promise((resolve, reject) => {
-        // Write Here
-        const results = []; // o/p is given in the form of an array
+// Promise.allPolyfill = (promises) => {
+//     return new Promise((resolve, reject) => {
+//         // Write Here
+//         const results = []; // o/p is given in the form of an array
 
-        // Edge case: i/p array is empty
-        if(!promises.length) { 
-            // resolve with empty [] 
-            resolve(results); 
-            return;
-        }
+//         // Edge case: i/p array is empty
+//         if(!promises.length) { 
+//             // resolve with empty [] 
+//             resolve(results); 
+//             return;
+//         }
 
-        // track pending promises, initially all
-        let pending = promises.length;
+//         // track pending promises, initially all
+//         let pending = promises.length;
 
-        // resolve each promise one-by-one
-        promises.forEach((promise, idx) => {
-            Promise.resolve(promise).then((res) => {
-                results[idx] = res;
+//         // resolve each promise one-by-one
+//         promises.forEach((promise, idx) => {
+//             Promise.resolve(promise).then((res) => {
+//                 results[idx] = res;
 
-                pending--;
-                if(pending === 0) {
-                    resolve(results); // Promise.all() is resolved if no more promises are pending
-                }
-            }, reject);
-        });
-    });
-}
+//                 pending--;
+//                 if(pending === 0) {
+//                     resolve(results); // Promise.all() is resolved if no more promises are pending
+//                 }
+//             }, reject);
+//         });
+//     });
+// }
 
-console.log('start');
+// console.log('start');
 
-function importantAction(username) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(`Subscribe to ${username}`);
-        }, 1000);
-    });
-}
+// function importantAction(username) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             resolve(`Subscribe to ${username}`);
+//         }, 1000);
+//     });
+// }
 
-function likeTheVideo(video) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(`Like the ${video} video`);
-        }, 1000);
-    });
-}
+// function likeTheVideo(video) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             resolve(`Like the ${video} video`);
+//         }, 1000);
+//     });
+// }
 
-function shareTheVideo(video) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(`Share the ${video} video`);
-        }, 1000);
-    });
-}
+// function shareTheVideo(video) {
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             resolve(`Share the ${video} video`);
+//         }, 1000);
+//     });
+// }
 
-Promise.all([
-    importantAction('Mohak Trivedi'),
-    likeTheVideo("JS interview questions"),
-    shareTheVideo("JS interview questions")
-]).then((res) => {
-    console.log(res);
-}).catch((err) => {
-    console.error("Error: Promises Failed.", err);
-});
+// Promise.all([
+//     importantAction('Mohak Trivedi'),
+//     likeTheVideo("JS interview questions"),
+//     shareTheVideo("JS interview questions")
+// ]).then((res) => {
+//     console.log(res);
+// }).catch((err) => {
+//     console.error("Error: Promises Failed.", err);
+// });
 
-Promise.allPolyfill([
-    importantAction('Mohak Trivedi'),
-    likeTheVideo("JS interview questions"),
-    shareTheVideo("JS interview questions")
-]).then((res) => {
-    console.log(res);
-}).catch((err) => {
-    console.error("Error: Promises Failed.", err);
-});
+// Promise.allPolyfill([
+//     importantAction('Mohak Trivedi'),
+//     likeTheVideo("JS interview questions"),
+//     shareTheVideo("JS interview questions")
+// ]).then((res) => {
+//     console.log(res);
+// }).catch((err) => {
+//     console.error("Error: Promises Failed.", err);
+// });
 
-console.log('stop');
+// console.log('stop');
