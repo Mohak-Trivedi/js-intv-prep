@@ -97,12 +97,12 @@
 // Question - Throttle Polyfill
 
 // Answer:
-const btn = document.querySelector('.increment_btn');
-const btnPress = document.querySelector('.increment_pressed');
-const count = document.querySelector('.increment_count');
+// const btn = document.querySelector('.increment_btn');
+// const btnPress = document.querySelector('.increment_pressed');
+// const count = document.querySelector('.increment_count');
 
-var pressedCount = 0;
-var triggeredCount = 0;
+// var pressedCount = 0;
+// var triggeredCount = 0;
 
 // // Method 1: Using inbuilt Lodash throttle function
 // const throttledCount = _.throttle(() => {
@@ -113,22 +113,22 @@ var triggeredCount = 0;
 // Requirements seen from the Lodash throttle function:
 // - Takes in: a callback and a time (delay)
 // - Returns: a throttled function 
-const myThrottle = (cb, delay) => {
-    let last = 0;
+// const myThrottle = (cb, delay) => {
+//     let last = 0; // the time at which the last callback got executed
 
-    return function (...args) {
-        let now = new Date().getTime();
-        if (now - last < delay) return;
-        last = now;
-        return cb(...args);
-    };
-}; 
+//     return function (...args) {
+//         let now = new Date().getTime(); // current event's time
+//         if (now - last < delay) return; // delay not achieved so don't execute callback for current event
+//         last = now; // delay achieved, so this time is the 'last' time
+//         return cb(...args); // execute callback and return the value returned by it.
+//     };
+// }; 
 
-const myThrottledCount = myThrottle(() => {
-    count.innerHTML = ++triggeredCount;
-}, 800);
+// const myThrottledCount = myThrottle(() => {
+//     count.innerHTML = ++triggeredCount;
+// }, 800);
 
-btn.addEventListener('click', () => {
-    btnPress.innerHTML = ++pressedCount;
-    myThrottledCount();
-});
+// btn.addEventListener('click', () => {
+//     btnPress.innerHTML = ++pressedCount;
+//     myThrottledCount();
+// });
