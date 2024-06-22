@@ -26,7 +26,7 @@ Hence, the event "propagates" and this phenomenon is called as Event Propagation
 */
 
 
-// What is Event Bubbling?
+// Question - What is Event Bubbling?
 // Bubbles always go from bottom to top.
 // So, in event bubbling, the events are propagated from bottom (innermost) to
 // top (outermost).
@@ -49,3 +49,24 @@ Hence, the event "propagates" and this phenomenon is called as Event Propagation
 // button.addEventListener('click', () => {
 //     alert('button');
 // });
+
+// Question - event.target v/s this.target v/s event.currentTarget
+// Answer:
+// Events bubble by default. So the difference between the three is:
+// target is the element that triggered the event (e.g., the user clicked on)
+// currentTarget is the element that the event listener is attached to.
+// this is similar to currentTarget
+// const div = document.querySelector('div');
+// const form = document.querySelector('form');
+// const button = document.querySelector('button');
+
+// div.addEventListener('click', func);
+// form.addEventListener('click', func);
+// button.addEventListener('click', func);
+
+// function func(event) {
+//     alert("currentTarget = " + event.currentTarget.tagName + 
+//         ", target = " + event.target.tagName + 
+//         ", this = " + this.tagName
+//     );
+// }
