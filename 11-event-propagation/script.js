@@ -134,6 +134,32 @@ Hence, the event "propagates" and this phenomenon is called as Event Propagation
 // in event listeners of form and further elements.
 
 
+// Question - What if upon clicking the button, we want to first execute the 
+// event listener of form, then the button and then the div? 
+// So, this is neither pure bubbling nor pure capturing. How to do it?
+// Answer:
+// Capture the event triggered at button in the event listener of form, then we
+// follow normal bubbling i.e. bottom to top i.e. button and then div.
+// const div = document.querySelector('div');
+// const form = document.querySelector('form');
+// const button = document.querySelector('button');
+
+// div.addEventListener('click', function () {
+//     alert('div');
+// });
+
+// form.addEventListener('click', function () {
+//     alert('form');
+// },
+// {
+//     capture: true,
+// });
+
+// button.addEventListener('click', function () {
+//     alert('button');
+// });
+
+
 // Question - What is Event Delegation?
 // Answer:
 // Event delegation is a technique in JavaScript where we delegate the responsibility 
@@ -157,8 +183,29 @@ Hence, the event "propagates" and this phenomenon is called as Event Propagation
 // document.querySelector('.products').addEventListener('click', function (event) {
 //     console.log(event); // for checking event object properties available
 
-
 //     if(event.target.tagName === "SPAN") { // clicked on span
 //         window.location.href += "/" + event.target.className; // update url with that span product's route for routing
 //     }
 // });
+
+
+// Question - Create a Modal which closes by clicking on negative space i.e. 
+// anywhere outside the modal.
+// Answer:
+const container = document.querySelector('.modalContainer');
+const button = document.querySelector('.modalButton');
+
+button.addEventListener('click', () => {
+    toggleModal(true);
+});
+
+function toggleModal(toggle) {
+    container.style.display = toggle ? "flex" : "none";
+}
+
+container.addEventListener('click', (e) => {
+    if(e.target.className === 'modalContainer') { // w/o this check, even clicking 
+    // on modal closes the modal due to Event Bubbling.
+        toggleModal(false);
+    }
+});
