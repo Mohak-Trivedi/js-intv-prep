@@ -76,32 +76,59 @@ Hence, the event "propagates" and this phenomenon is called as Event Propagation
 // Answer:
 // By default, events get bubbled i.e. propagate from bottom to top.
 // With Event Capturing, we can make them propagate from top to bottom.
-const div = document.querySelector('div');
-const form = document.querySelector('form');
-const button = document.querySelector('button');
+// const div = document.querySelector('div');
+// const form = document.querySelector('form');
+// const button = document.querySelector('button');
 
-div.addEventListener('click', function () {
-    alert('div');
-},
-{
-    capture: true,
-});
+// div.addEventListener('click', function () {
+//     alert('div');
+// },
+// {
+//     capture: true,
+// });
 
-form.addEventListener('click', function () {
-    alert('form');
-},
-{
-    capture: true,
-});
+// form.addEventListener('click', function () {
+//     alert('form');
+// },
+// {
+//     capture: true,
+// });
 
-button.addEventListener('click', function () {
-    alert('button');
-},
-{
-    capture: true,
-});
+// button.addEventListener('click', function () {
+//     alert('button');
+// },
+// {
+//     capture: true,
+// });
 // Suppose if we remove { capture: true } from the event listeners of form and 
 // button, then upon clicking the button, first the event listener of div will
 // get called as it has capture: true, but then later on instead of coming top
 // to bottom i.e. instead of form then button, we go bottom to top i.e. button to
 // form.
+
+
+// Question - How to stop bubbling or capturing?
+// Answer:
+// By using event.stopPropagation() in the event from where you don't want to 
+// propagate (bubble or capture) further.
+const div = document.querySelector('div');
+const form = document.querySelector('form');
+const button = document.querySelector('button');
+
+div.addEventListener('click', function (e) {
+    e.stopPropagation();
+    alert('div');
+});
+
+form.addEventListener('click', function (e) {
+    e.stopPropagation();
+    alert('form');
+});
+
+button.addEventListener('click', function (e) {
+    e.stopPropagation();
+    alert('button');
+});
+// Suppose we want to allow bubbling from button to form, but not further,
+// then remove e.stopPrapagation() from button's event listener, but let it be
+// in event listeners of form and further elements.
