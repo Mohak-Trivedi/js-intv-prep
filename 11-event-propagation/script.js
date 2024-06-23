@@ -192,20 +192,20 @@ Hence, the event "propagates" and this phenomenon is called as Event Propagation
 // Question - Create a Modal which closes by clicking on negative space i.e. 
 // anywhere outside the modal.
 // Answer:
-const container = document.querySelector('.modalContainer');
-const button = document.querySelector('.modalButton');
+// const container = document.querySelector('.modalContainer');
+// const button = document.querySelector('.modalButton');
 
-button.addEventListener('click', () => {
-    toggleModal(true);
-});
+// button.addEventListener('click', () => {
+//     toggleModal(true);
+// });
 
-function toggleModal(toggle) {
-    container.style.display = toggle ? "flex" : "none";
-}
+// function toggleModal(toggle) {
+//     container.style.display = toggle ? "flex" : "none";
+// }
 
-container.addEventListener('click', (e) => {
-    if(e.target.className === 'modalContainer') { // w/o this check, even clicking 
-    // on modal closes the modal due to Event Bubbling.
-        toggleModal(false);
-    }
-});
+// container.addEventListener('click', (e) => {
+//     if(e.target.className === 'modalContainer') { // w/o this check, even clicking 
+//     // on modal closes the modal due to Event Bubbling.
+//         toggleModal(false);
+//     }
+// });
