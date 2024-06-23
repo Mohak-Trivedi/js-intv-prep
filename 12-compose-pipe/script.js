@@ -39,12 +39,22 @@ console.log(evaluate(5));
 // executed such that the value returned by one is passed as argument to its left
 // adjacent one.
 
+// function compose (...funcs) {
+//     return function (init) {
+//         let result = init;
+//         for (let i = funcs.length - 1; i >= 0 ;i--) {
+//             result = funcs[i](result);
+//         }
+//         return result;
+//     }
+// }
+
+// compose by using inbuilt method reduceRight()
+// reduceRight() is just like reduce() but iterates array from right to left
 function compose (...funcs) {
     return function (init) {
-        let result = init;
-        for (let i = funcs.length - 1; i >= 0 ;i--) {
-            result = funcs[i](result);
-        }
-        return result;
-    }
+        return funcs.reduceRight((acc, curr) => {
+            return curr(acc);
+        }, init);
+    } 
 }
