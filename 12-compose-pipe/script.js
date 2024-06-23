@@ -58,3 +58,31 @@ function compose (...funcs) {
         }, init);
     } 
 }
+
+
+// pipe() is just like compose() but it executes from leftmost to rightmost 
+// functions.
+// So, we must use reduce() in pipe() and in case of doing from scratch,
+// run the for loop from 0 to funcs.length - 1.
+
+// function pipe (...funcs) {
+//     return function (init) {
+//         let result = init;
+//         for(let i = 0;i < funcs.length;i++) {
+//             result = funcs[i](result);
+//         }
+//         return result;
+//     }
+// }
+
+// pipe by using inbuilt method reduce()
+function pipe (...funcs) {
+    return function (init) {
+        return funcs.reduce((acc, curr) => {
+            return curr(acc);
+        }, init);
+    }
+}
+
+const evaluatePipe = pipe(addFive, subtractTwo, multiplyFour);
+console.log(evaluatePipe(5)); // 32
