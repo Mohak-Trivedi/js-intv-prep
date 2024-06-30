@@ -90,23 +90,23 @@
 // kind of inheriting the properties of additional in person object.
 
 // Defined a Constructor function
-function Animal(name) {
-    this.name = name;
-}
+// function Animal(name) {
+//     this.name = name;
+// }
 
 // type out Animal.prototype in console, you'll notice:
 // constructor and [[Prototype]]: Object
 
 // Add a method to the prototype
-Animal.prototype.sayName = function () {
-    console.log("My name is " + this.name);
-};
+// Animal.prototype.sayName = function () {
+//     console.log("My name is " + this.name);
+// };
 
 // type out Animal.prototype in console, you'll notice:
 // sayName(), constructor and [[Prototype]]: Object
 
 // Create object animal1 of Animal
-var animal1 = new Animal("Tiger");
+// var animal1 = new Animal("Tiger");
 // new keyword creates a new object and sets the constructor and sets the prototype
 // of Animal as the prototype of this new object created, 
 // i.e. typing animal1.__proto__ will give same result as Animal.prototype.
@@ -121,11 +121,11 @@ var animal1 = new Animal("Tiger");
 // JS Classes came from ES6 onwards, we will check those in the next session.
 // Now, let's see Prototypal Inheritance:
 
-function Dog(name, breed) {
-    Animal.call(this, name); // inheriting Animal, as Dog is an Animal
-    this.breed = breed; // Dog's own property apart from properties inherited 
-    // from Animal.
-}
+// function Dog(name, breed) {
+//     Animal.call(this, name); // inheriting Animal, as Dog is an Animal
+//     this.breed = breed; // Dog's own property apart from properties inherited 
+//     // from Animal.
+// }
 // type out Dog.prototype in console, you'll notice:
 // constructor and [[Prototype]]: Object
 
@@ -138,7 +138,7 @@ function Dog(name, breed) {
 // Uncaught TypeError: dog1.sayName is not a function
 // because the properties from the prototype of Animal are yet to be inherited.
 
-Dog.prototype = Object.create(Animal.prototype); // inheriting the properties of
+// Dog.prototype = Object.create(Animal.prototype); // inheriting the properties of
 // not just Animal, but also of its prototype.
 
 // var dog1 = new Dog("Rolex", "Labrador");
@@ -155,7 +155,7 @@ Dog.prototype = Object.create(Animal.prototype); // inheriting the properties of
 // sayName(), constructor and [[Prototype]]: Object
 
 // We don't want that to happen, so need to mention it explicitly:
-Dog.prototype.constructor = Dog;
+// Dog.prototype.constructor = Dog;
 // type out Dog.prototype, you'll notice:
 // Animal {}
 // Upon expanding it, you get:
@@ -163,9 +163,9 @@ Dog.prototype.constructor = Dog;
 // [[Prototype]]: Object 
 
 // Let's add one more method to the prototype of Dog:
-Dog.prototype.bark = function() {
-    console.log("Woof!");
-};
+// Dog.prototype.bark = function() {
+//     console.log("Woof!");
+// };
 
 // type out Dog.prototype, you'll notice:
 // Animal {bark: ƒ}
@@ -174,6 +174,140 @@ Dog.prototype.bark = function() {
 // constructor: ƒ Dog(name, breed)
 // [[Prototype]]: Object 
 
-var dog1 = new Dog("Rolex", "Labrador");
-dog1.bark();
-dog1.sayName();
+// var dog1 = new Dog("Rolex", "Labrador");
+// dog1.bark();
+// dog1.sayName();
+
+
+// Question - Predict the output:
+// function Vehicle() {}
+
+// Vehicle.prototype.drive = function () {
+//     console.log('Driving a vehicle.');
+// }
+
+// function Car() {}
+
+// Car.prototype = Object.create(Vehicle.prototype);
+// Car.prototype.constructor = Car;
+// Car.prototype.drive = function () {
+//     console.log('Driving a car.');
+// }
+
+// var vehicle = new Vehicle();
+// var car = new Car();
+
+// vehicle.drive();
+// car.drive();
+
+// Answer:
+// Driving a vehicle.
+// Driving a car.
+
+
+// Question - Explain the difference between __proto__ and prototype in JavaScript.
+
+// Answer:
+/*
+Certainly! Understanding the difference between `prototype` and `__proto__` is fundamental in JavaScript when dealing with objects and inheritance.
+
+### `prototype`
+
+The `prototype` is a property of constructor functions in JavaScript. It allows you to add properties and methods to all instances of objects created by that constructor function.
+
+### `__proto__`
+
+The `__proto__` is an internal property of an object that points to the prototype of the constructor function that created the object. It forms part of the prototype chain and is used for inheritance.
+
+### Example
+
+Let's illustrate this with an example:
+
+```
+// Constructor function
+function Person(name) {
+    this.name = name;
+}
+
+// Adding a method to the prototype
+Person.prototype.greet = function() {
+    console.log("Hello, my name is " + this.name);
+};
+
+// Creating an instance of Person
+const alice = new Person("Alice");
+
+// Using the instance's method
+alice.greet(); // Output: Hello, my name is Alice
+
+// Checking the prototype and __proto__
+console.log(Person.prototype); // Output: { greet: [Function (anonymous)] }
+console.log(alice.__proto__);  // Output: { greet: [Function (anonymous)] }
+console.log(alice.__proto__ === Person.prototype); // Output: true
+```
+
+### Explanation
+
+1. **`Person.prototype`**: This is an object that contains properties and methods that should be inherited by all instances created by the `Person` constructor. In this example, `Person.prototype` has a method called `greet`.
+
+2. **`alice.__proto__`**: This is the internal property of the `alice` instance that points to `Person.prototype`. It means that `alice` inherits properties and methods from `Person.prototype`.
+
+3. **Prototype Chain**: When you call `alice.greet()`, JavaScript looks for the `greet` method on the `alice` object. If it doesn't find it, it follows the `__proto__` reference to `Person.prototype` where it finds and executes the method.
+
+### Conclusion
+
+- `prototype` is used to define properties and methods for all instances created by a constructor function.
+- `__proto__` is an internal property that links an object to its constructor's prototype, forming the prototype chain.
+
+This distinction is crucial for understanding inheritance and the prototype chain in JavaScript.
+*/
+
+
+// Question - What is setPrototypeOf?
+
+// Answer:
+// For e.g.:
+// Define a prototype object
+// var animalPrototype = {
+//     sound: function () {
+//         console.log('Making a sound...')
+//     },
+// };
+
+// Create an object with animalPrototype as its prototype
+// var dog = Object.create(animalPrototype);
+
+// Create another object with a different prototype
+// var cat = {
+//     purr: function () {
+//         console.log('Purring...');
+//     },
+// };
+
+// type out dog.__proto__ in console and you will notice the same result as
+// typing out animalPrototype i.e. sound() and Object prototype.
+// Object.setPrototypeOf(dog, cat);
+// Now type out dog, and you will now notice the same result as typing out 
+// cat, i.e. purr() and Object prototype.
+
+// So, basically, setPrototypeOf() replaces the prototype of the 1st argument
+// with the 2nd argument mentioned.
+
+
+// Question - What is instanceof?
+
+// Answer:
+// // e.g.:
+// // Defined a Constructor function
+// function Animal(name) {
+//     this.name = name;
+// }
+
+// // type out Animal.prototype in console, you'll notice:
+// // constructor and [[Prototype]]: Object
+
+// // Create object animal1 of Animal
+// var animal1 = new Animal("Tiger");
+
+// console.log(animal1 instanceof Animal); // true
+// // So, instanceof helps us indentify if the LHS is an instance of RHS
