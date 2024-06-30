@@ -311,3 +311,95 @@ This distinction is crucial for understanding inheritance and the prototype chai
 
 // console.log(animal1 instanceof Animal); // true
 // // So, instanceof helps us indentify if the LHS is an instance of RHS
+
+
+// Question - How can you create an object without a prototype in JS?
+
+// Answer:
+// var obj1 = Object.create(null);
+// console.log(obj1); // {} i.e. object is created
+// console.log(obj1.toString()) // Uncaught TypeError: toString() is not a function
+// // i.e. no Object prototype attached to obj1. 
+
+
+// Question - Predict the output:
+// function A() {}
+// A.prototype.foo = 10;
+
+// function B() {}
+// B.prototype = Object.create(A.prototype);
+// B.prototype.constructor = B;
+// B.prototype.foo = 20;
+
+// function C() {}
+// C.prototype = Object.create(B.prototype);
+// C.prototype.constructor = C;
+// C.prototype.foo = 30;
+
+// var obj1 = new A();
+// var obj2 = new B();
+// var obj3 = new C();
+
+// console.log(obj1.foo);
+// console.log(obj2.foo);
+// console.log(obj3.foo);
+
+// Answer:
+// 10
+// 20
+// 30
+
+
+// Question - Deep clone an object in JS.
+
+// var obj2 = {
+//     a: 1,
+//     b: {
+//         c: 2,
+//         d: [3, 4],
+//     },
+// };
+
+// var clonedObj = obj2;
+// clonedObj.a = 3;
+// this changes value of a from 1 to 3 in not just clonedObj, but even in obj2,
+// as we haven't done deep cloning because we have passed by reference.
+
+// Answer:
+// We will create a function deepClone such that given an object, it will create
+// a deep clone of that object.
+function deepClone(obj) {
+    // Handle null and non-object types
+    if(obj === null || typeof obj != 'object') {
+        return obj;
+    }
+
+    // Create a new object or array based on the type of the input object
+    var clone = Array.isArray(obj) ? [] : {};
+
+    console.log(obj);
+
+    // Iterate through each key in the input object
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key)) {
+            clone[key] = deepClone(obj[key]);
+        }
+    }
+
+    return clone; 
+}
+
+var obj2 = {
+    a: 1,
+    b: {
+        c: 2,
+        d: [3, 4],
+    },
+};
+
+var clonedObj = deepClone(obj2);
+clonedObj.a = 3;
+console.log(clonedObj);
+console.log(obj2);
+// Now, you'll notice that the value of a has changed from 1 to 3 only in clonedObj
+// not in obj2 i.e. we have performed deep cloning successfully.
