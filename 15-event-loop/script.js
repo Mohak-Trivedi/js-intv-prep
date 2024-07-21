@@ -246,3 +246,29 @@
 // b Runs
 // c Runs
 // d Runs
+
+
+// Predict the output:
+// function pause(millis) {
+//     return new Promise(function p(resolve) {
+//         setTimeout(function s() {
+//             resolve("resolved");
+//         }, millis);
+//     });
+// }
+
+// const start = Date.now();
+// console.log("Start");
+
+// pause(1000).then((res) => {
+//     const end = Date.now();
+//     const secs = (end - start) / 1000;
+//     console.log(res, ":", secs);
+// });
+
+// o/p:
+// Start
+// resolved : 1.155
+
+// (Note: The exact elapsed time might vary slightly due to the nature of timing
+// and event loop handling in JavaScript.)
