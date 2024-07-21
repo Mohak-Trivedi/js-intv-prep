@@ -87,3 +87,162 @@
 // Inside setTimeout (macro - task)
 
 ///////////////////////////////////////////////////////////////////
+// Interview Questions on Event Loop:
+
+// Question - What is Event Loop?
+
+// Answer:
+// JS is single-threaded and the event loop is responsible for how its 
+// asynchronous behaviour happens.
+// The event loop is like a traffic controller in JS that manages the execution 
+// of code. 
+// It ensures tasks are processed in an orderly manner, handling asynchronous 
+// operations by continuously checking if there are pending tasks in queues
+// (microtasks and macrotasks).
+
+
+// Question - Why we need event loop to manage these task queue and microtask queue?
+
+// Answer:
+// Explain with the Example 3
+
+
+// Question - Predict the o/p:
+// blockMainThread();
+
+// console.log('Start');
+
+// function blockMainThread() {
+//     const start = Date.now();
+
+//     while(Date.now() - start < 3000) {}
+
+//     console.log('running...');
+// }
+
+// console.log('End');
+
+// o/p:
+// running... (after 3 seconds)
+// Start
+// End
+
+
+// Question: What is the output?
+// setTimeout(function a() {
+//     console.log('a');
+// }, 1000);
+// setTimeout(function b() {
+//     console.log('b');
+// }, 500);
+// setTimeout(function c() {
+//     console.log('c');
+// }, 0);
+
+// function d() {
+//     console.log('d Runs');
+// }
+
+// d();
+
+// o/p:
+// d Runs
+// c
+// b
+// a
+
+// Even though Task Queue : [a, b, c]
+// Still order of execution is c b a because c's timer got over first then b's 
+// and then a's
+
+
+// Question - Predict the output:
+// function a() {
+//     for (var i = 0;i < 3;i++) {
+//         setTimeout(function log() {
+//             console.log(i);
+//         }, i * 1000);
+//     }
+// }
+// a();
+
+// o/p:
+// 3
+// 3 (after 1 sec)
+// 3 (after 2 sec)
+
+
+// Question - How can you make the above code print 0 1 2 instead of 3 3 3?
+// Answer:
+// Use let instead of var.
+// var has function scope hence each log() accesses the same i present in scope 
+// of a(). This i has value of 3 by the time the log() present in the task queue
+// start getting executed. 
+// let has block scope hence each log() accesses the i of its own loop iteration
+// i.e. the i present in its own iteration of for(){}. Due to Closure, each log()
+// is able to access the i defined at the time of its iteration and hence first 
+// log() has i = 0, second has i = 1, and last has i = 2.
+// function a() {
+//     for (let i = 0;i < 3;i++) {
+//         setTimeout(function log() {
+//             console.log(i);
+//         }, i * 1000);
+//     }
+// }
+// a();
+
+
+// Question - Predict the output:
+// Promise.resolve()
+//     .then(function a() {
+//         Promise.resolve().then(function d() {
+//             console.log('d Runs');
+//         });
+//         Promise.resolve().then(function e() {
+//             console.log('e Runs');
+//         });
+//         throw new Error("Error Occurred!");
+//         Promise.resolve().then(function f() {
+//             console.log('f Runs');
+//         });
+//     })
+//     .catch(function b() {
+//         console.log('b Runs');
+//     })
+//     .then(function c() {
+//         console.log('c Runs');
+//     });
+
+// o/p:
+// d Runs
+// e Runs
+// b Runs
+// c Runs
+
+
+// Question - Predict the output:
+// Promise.resolve()
+//     .then(function a() {
+//         Promise.resolve().then(setTimeout(function d() {
+//             console.log('d Runs');
+//         }, 0));
+//         Promise.resolve().then(function e() {
+//             console.log('e Runs');
+//         });
+//         throw new Error("Error Occurred!");
+//         Promise.resolve().then(function f() {
+//             console.log('f Runs');
+//         });
+//     })
+//     .catch(function b() {
+//         console.log('b Runs');
+//     })
+//     .then(function c() {
+//         console.log('c Runs');
+//     });
+
+// o/p:
+// e Runs
+// b Runs
+// c Runs
+// d Runs
